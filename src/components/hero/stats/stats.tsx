@@ -1,10 +1,12 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import eatr from "../../../public/images/eatr.png";
 
 const Genders = ["Male", "Female", "Non-Binary"];
 const DietaryRestrictions = ["None", "Vegetarian", "Vegan"];
-const DietaryGoals = ["Gain Weight", "Maintain Weight", "Lose Weight"];
+const DietaryGoals = ["Gain", "Maintain", "Lose"];
 
 export const ArrowIcon = () => {
   return (
@@ -21,9 +23,46 @@ export const ArrowIcon = () => {
 };
 
 const Stats = () => {
+  const [height, setHeight] = useState<number>();
+  const [weight, setWeight] = useState<number>();
+  const [gender, setGender] = useState<"Male" | "Female" | "Non-Binary">();
+  const [diet, setDiet] = useState<"None" | "Vegetarian" | "Vegan">();
+  const [goal, setGoal] = useState<"Gain" | "Maintain" | "Lose">();
+
+  const handleHeightChange = useCallback(
+    (e: any) => {
+      setHeight(e.target.value);
+    },
+    [setHeight],
+  );
+  const handleWeightChange = useCallback(
+    (e: any) => {
+      setWeight(e.target.value);
+    },
+    [setWeight],
+  );
+  const handleGenderChange = useCallback(
+    (e: any) => {
+      setGender(e.target.value);
+    },
+    [setGender],
+  );
+  const handleDietChange = useCallback(
+    (e: any) => {
+      setDiet(e.target.value);
+    },
+    [setDiet],
+  );
+  const handleGoalChange = useCallback(
+    (e: any) => {
+      setGoal(e.target.value);
+    },
+    [setGoal],
+  );
+
   return (
     <>
-      <div className="= flex h-[40rem] w-96 flex-col gap-10 rounded-xl bg-neutral-300 p-4 text-primary drop-shadow-lg">
+      <div className="= flex h-[40rem] w-80 flex-col gap-6 rounded-xl bg-neutral-300 p-4 text-primary drop-shadow-lg">
         <div className="flex place-content-center text-2xl font-medium">
           Your Zot-Stats!
         </div>
@@ -37,6 +76,7 @@ const Stats = () => {
               className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
               type="text"
               placeholder="60"
+              onChange={handleHeightChange}
             />
           </div>
 
@@ -48,6 +88,7 @@ const Stats = () => {
               className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
               type="text"
               placeholder="100"
+              onChange={handleWeightChange}
             />
           </div>
 
@@ -56,7 +97,10 @@ const Stats = () => {
               Gender
             </label>
             <div className="relative">
-              <select className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none">
+              <select
+                onChange={handleGenderChange}
+                className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
+              >
                 {Genders.map((gender) => (
                   <option key={gender}>{gender}</option>
                 ))}
@@ -70,7 +114,10 @@ const Stats = () => {
               Dietary Restriction
             </label>
             <div className="relative">
-              <select className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none">
+              <select
+                onChange={handleDietChange}
+                className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
+              >
                 {DietaryRestrictions.map((restriction) => (
                   <option key={restriction}>{restriction}</option>
                 ))}
@@ -84,9 +131,12 @@ const Stats = () => {
               Dietary Goal
             </label>
             <div className="relative">
-              <select className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none">
+              <select
+                onChange={handleGoalChange}
+                className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
+              >
                 {DietaryGoals.map((goal) => (
-                  <option key={goal}>{goal}</option>
+                  <option key={goal}>{goal} Weight</option>
                 ))}
               </select>
               <ArrowIcon />
@@ -100,6 +150,7 @@ const Stats = () => {
             alt={"Anteater with food"}
             width={100}
             height={100}
+            className="w-36"
           />
         </div>
       </div>
