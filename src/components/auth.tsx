@@ -9,8 +9,6 @@ import petr from "../public/images/petr.png";
 export const Auth = () => {
   const [user, setUser] = useState<User | null>(auth?.currentUser);
 
-  console.log(user);
-
   const signInWithGoogle = async () => {
     try {
       if (user) {
