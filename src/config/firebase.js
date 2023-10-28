@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -24,3 +25,15 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+
+export const saveUserData = async (userData) => {
+  const db = getFirestore(app);
+  const usersCollection = collection(db, "users");
+
+  try {
+    const docRef = await addDoc(usersCollection, userData);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};

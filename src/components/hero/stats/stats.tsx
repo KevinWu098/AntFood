@@ -3,12 +3,13 @@
 import Image from "next/image";
 import React, { useCallback, useState } from "react";
 import eatr from "../../../public/images/eatr.png";
+import { saveUserData } from "@/config/firebase";
 
 const Genders = ["Male", "Female", "Non-Binary"];
 const DietaryRestrictions = ["None", "Vegetarian", "Vegan"];
 const DietaryGoals = ["Gain", "Maintain", "Lose"];
 
-export const ArrowIcon = () => {
+const ArrowIcon = () => {
   return (
     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
       <svg
@@ -25,9 +26,11 @@ export const ArrowIcon = () => {
 const Stats = () => {
   const [height, setHeight] = useState<number>();
   const [weight, setWeight] = useState<number>();
-  const [gender, setGender] = useState<"Male" | "Female" | "Non-Binary">();
-  const [diet, setDiet] = useState<"None" | "Vegetarian" | "Vegan">();
-  const [goal, setGoal] = useState<"Gain" | "Maintain" | "Lose">();
+  const [gender, setGender] = useState<"Male" | "Female" | "Non-Binary">(
+    "Male",
+  );
+  const [diet, setDiet] = useState<"None" | "Vegetarian" | "Vegan">("None");
+  const [goal, setGoal] = useState<"Gain" | "Maintain" | "Lose">("Gain");
 
   const handleHeightChange = useCallback(
     (e: any) => {
@@ -55,10 +58,20 @@ const Stats = () => {
   );
   const handleGoalChange = useCallback(
     (e: any) => {
-      setGoal(e.target.value);
+      setGoal(e.target.value.split(" ")[0]);
     },
     [setGoal],
   );
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
+    const userData = { height, weight, gender, diet, goal };
+    console.log(gender);
+    saveUserData(userData);
+
+    console.log("submit");
+  };
 
   return (
     <>
@@ -67,82 +80,89 @@ const Stats = () => {
           Your Zot-Stats!
         </div>
 
-        <div className="flex flex-col gap-4">
-          <div>
-            <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-700">
-              Height {"(inches)"}
-            </label>
-            <input
-              className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
-              type="text"
-              placeholder="60"
-              onChange={handleHeightChange}
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-700">
-              Weight {"(lbs)"}
-            </label>
-            <input
-              className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
-              type="text"
-              placeholder="100"
-              onChange={handleWeightChange}
-            />
-          </div>
-
-          <div>
-            <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-700">
-              Gender
-            </label>
-            <div className="relative">
-              <select
-                onChange={handleGenderChange}
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col place-content-center gap-4"
+        >
+          <div className="flex flex-col gap-4">
+            <div>
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-700">
+                Height {"(inches)"}
+              </label>
+              <input
                 className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
-              >
-                {Genders.map((gender) => (
-                  <option key={gender}>{gender}</option>
-                ))}
-              </select>
-              <ArrowIcon />
+                type="number"
+                placeholder="60"
+                value={height}
+                onChange={handleHeightChange}
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-700">
+                Weight {"(lbs)"}
+              </label>
+              <input
+                className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
+                type="number"
+                placeholder="100"
+                value={weight}
+                onChange={handleWeightChange}
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-700">
+                Gender
+              </label>
+              <div className="relative">
+                <select
+                  onChange={handleGenderChange}
+                  className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
+                >
+                  {Genders.map((gender) => (
+                    <option key={gender}>{gender}</option>
+                  ))}
+                </select>
+                <ArrowIcon />
+              </div>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-700">
+                Dietary Restriction
+              </label>
+              <div className="relative">
+                <select
+                  onChange={handleDietChange}
+                  className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
+                >
+                  {DietaryRestrictions.map((restriction) => (
+                    <option key={restriction}>{restriction}</option>
+                  ))}
+                </select>
+                <ArrowIcon />
+              </div>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-700">
+                Dietary Goal
+              </label>
+              <div className="relative">
+                <select
+                  onChange={handleGoalChange}
+                  className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
+                >
+                  {DietaryGoals.map((goal) => (
+                    <option key={goal}>{goal} Weight</option>
+                  ))}
+                </select>
+                <ArrowIcon />
+              </div>
             </div>
           </div>
 
-          <div>
-            <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-700">
-              Dietary Restriction
-            </label>
-            <div className="relative">
-              <select
-                onChange={handleDietChange}
-                className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
-              >
-                {DietaryRestrictions.map((restriction) => (
-                  <option key={restriction}>{restriction}</option>
-                ))}
-              </select>
-              <ArrowIcon />
-            </div>
-          </div>
-
-          <div>
-            <label className="mb-1 block text-xs font-bold uppercase tracking-wide text-gray-700">
-              Dietary Goal
-            </label>
-            <div className="relative">
-              <select
-                onChange={handleGoalChange}
-                className="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 leading-tight text-gray-700 drop-shadow-sm focus:border-gray-500 focus:bg-white focus:outline-none"
-              >
-                {DietaryGoals.map((goal) => (
-                  <option key={goal}>{goal} Weight</option>
-                ))}
-              </select>
-              <ArrowIcon />
-            </div>
-          </div>
-        </div>
+          <button className="mx-auto flex w-24 place-content-center rounded-xl  border-2 border-solid border-primary text-primary drop-shadow-md">
+            Submit
+          </button>
+        </form>
 
         <div className="flex place-content-center">
           <Image
@@ -150,7 +170,7 @@ const Stats = () => {
             alt={"Anteater with food"}
             width={100}
             height={100}
-            className="w-36"
+            className="w-28"
           />
         </div>
       </div>
