@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex flex-col place-content-center bg-background text-text">
+        <div className="flex flex-col place-content-center gap-8 bg-background text-text">
           <Header />
           {children}
           <Footer />

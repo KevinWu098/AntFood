@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import eatr from "../../../public/images/eatr.png";
-import { saveUserData } from "@/config/firebase";
+import { saveUserData, auth, getUserData } from "@/config/firebase";
+import { DocumentData } from "firebase/firestore";
 
 const Genders = ["Male", "Female", "Non-Binary"];
 const DietaryRestrictions = ["None", "Vegetarian", "Vegan"];
@@ -24,8 +25,11 @@ const ArrowIcon = () => {
 };
 
 const Stats = () => {
-  const [height, setHeight] = useState<number>();
-  const [weight, setWeight] = useState<number>();
+  const user = auth.currentUser;
+  const [userData, setUserData] = useState<DocumentData | null>(null);
+
+  const [height, setHeight] = useState<number>(0);
+  const [weight, setWeight] = useState<number>(0);
   const [gender, setGender] = useState<"Male" | "Female" | "Non-Binary">(
     "Male",
   );
@@ -67,17 +71,44 @@ const Stats = () => {
     e.preventDefault();
 
     const userData = { height, weight, gender, diet, goal };
-    console.log(gender);
-    saveUserData(userData);
 
-    console.log("submit");
+    if (user) {
+      saveUserData(user.uid, user.email, userData);
+    } else {
+      console.log("User is not authenticated/logged in...");
+    }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        const data = await getUserData(user.uid);
+
+        setUserData(data);
+
+        setHeight(userData?.height);
+        setWeight(userData?.weight);
+        setGender(userData?.gender);
+        setDiet(userData?.diet);
+        setGoal(userData?.goal);
+      }
+    };
+
+    fetchData();
+  }, [
+    user,
+    userData?.diet,
+    userData?.gender,
+    userData?.goal,
+    userData?.height,
+    userData?.weight,
+  ]);
 
   return (
     <>
-      <div className="= flex h-[40rem] w-80 flex-col gap-6 rounded-xl bg-neutral-300 p-4 text-primary drop-shadow-lg">
+      <div className="= flex h-[40rem] w-[25%] flex-col gap-6 rounded-xl bg-neutral-300 p-4 text-primary drop-shadow-lg">
         <div className="flex place-content-center text-2xl font-medium">
-          Your Zot-Stats!
+          Your Profile
         </div>
 
         <form
@@ -159,12 +190,16 @@ const Stats = () => {
             </div>
           </div>
 
-          <button className="mx-auto flex w-24 place-content-center rounded-xl  border-2 border-solid border-primary text-primary drop-shadow-md">
-            Submit
+          {/*TODO: ADD PROPER DISABLED STATE AND ERROR MESSAGES */}
+          <button
+            disabled={auth.currentUser ? false : true}
+            className="mx-auto flex w-32 place-content-center rounded-xl border-2 border-solid border-primary py-1 text-primary drop-shadow-md"
+          >
+            Save Profile
           </button>
         </form>
 
-        <div className="flex place-content-center">
+        {/* <div className="flex place-content-center">
           <Image
             src={eatr}
             alt={"Anteater with food"}
@@ -172,7 +207,7 @@ const Stats = () => {
             height={100}
             className="w-28"
           />
-        </div>
+        </div> */}
       </div>
     </>
   );

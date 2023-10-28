@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, googleProvider } from "../config/firebase.js";
 import { User, signInWithPopup, signOut } from "firebase/auth";
 import Image from "next/image.js";
 import petr from "../public/images/petr.png";
 
 export const Auth = () => {
-  const [user, setUser] = useState<User | null>(auth?.currentUser);
+  const [user, setUser] = useState<User | null>(auth.currentUser);
 
   const signInWithGoogle = async () => {
     try {
@@ -32,6 +32,14 @@ export const Auth = () => {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+
+    return () => unsubscribe(); // Clean up the subscription when the component unmounts
+  }, []);
 
   return (
     <>
