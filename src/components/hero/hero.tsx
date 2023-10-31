@@ -7,14 +7,14 @@ import Link from "next/link";
 const Hero = () => {
   return (
     <>
-      <div className="mt-8 flex h-[calc(100vh-6rem)] flex-col p-16 lg:flex-row">
-        <div className="mx-auto flex w-[80%] flex-col">
-          <div className="mb-8 items-center text-center text-4xl font-black leading-tight">
+      <div className="mt-8 flex h-[calc(100vh-6rem)] flex-col items-center p-8 md:p-16 lg:flex-row lg:px-48">
+        <div className="mx-auto flex w-[80%] flex-col text-center lg:w-[50%] lg:text-left">
+          <div className="mb-8 items-center text-4xl font-black leading-tight">
             <span className="text-primary">Redefining</span> your UCI Dining
             Experience
           </div>
 
-          <div className="place-content-center text-center text-xl">
+          <div className="place-content-center text-xl">
             Your personalized plate:{" "}
             <span className="font-semibold text-primary">curated meals</span>{" "}
             prepared by Artificial Intelligence,{" "}
@@ -22,9 +22,9 @@ const Hero = () => {
             your preferences
           </div>
 
-          <div className="my-10">
+          <div className="my-10 ">
             <Link href="/profile">
-              <button className="mx-auto flex items-center gap-4 rounded-full border-2 border-solid bg-primary px-8 py-4 text-[1.555rem] font-bold text-background">
+              <button className="mx-auto flex items-center gap-4 rounded-full border-2 border-solid bg-primary px-8 py-4 text-[1.555rem] font-bold text-background lg:mx-0">
                 Dig in!
                 <FaExternalLinkAlt />
               </button>
@@ -33,9 +33,13 @@ const Hero = () => {
         </div>
 
         <div
-          className={`mx-auto flex w-[90%] place-content-center justify-center rounded-lg ${styles.fadeInUp}`}
+          className={`mx-auto flex w-[90%] place-content-center justify-center rounded-lg lg:w-[50%] ${styles.fadeInUp}`}
         >
-          <Image src={Anteatery2} alt="Anteatery" className="rounded-xl" />
+          <Image
+            src={Anteatery2}
+            alt="Anteatery"
+            className="w-[80%] rounded-xl object-cover lg:h-[32rem]"
+          />
         </div>
       </div>
     </>
