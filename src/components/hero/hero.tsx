@@ -7,7 +7,7 @@ import Link from "next/link";
 const Hero = () => {
   return (
     <>
-      <div className="mt-8 flex h-[calc(100vh-6rem)] flex-col items-center p-8 md:p-16 lg:flex-row lg:px-48">
+      <div className="mt-8 flex flex-col items-center p-8 md:p-16 lg:flex-row lg:px-48">
         <div className="mx-auto flex w-[80%] flex-col text-center lg:w-[50%] lg:text-left">
           <div className="mb-8 items-center text-4xl font-black leading-tight">
             <span className="text-primary">Redefining</span> your UCI Dining
