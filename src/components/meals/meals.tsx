@@ -81,6 +81,7 @@ async function queryZotMeal(location: string, time: string) {
       const itemsArray = filteredMenuData.flatMap((station: any) =>
         station.menu.flatMap((menu: any) => menu.items),
       );
+
       const meal = await queryBard(itemsArray);
 
       return meal;
@@ -113,7 +114,7 @@ const Meal = () => {
     setLoading(true);
 
     Meals.forEach(async (meal) => {
-      let data = await queryZotMeal(location, meal);
+      let data = await queryZotMeal(location.toLowerCase(), meal);
 
       if (meal == "breakfast") {
         try {
