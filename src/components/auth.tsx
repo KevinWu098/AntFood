@@ -64,7 +64,7 @@ export const Auth = () => {
             >
               Logout
             </button>
-            <div className="h-11 w-11">
+            <div className="hidden h-11 w-11 md:flex">
               <Image
                 src={user.photoURL ? user.photoURL : petr}
                 alt={"Profile Picture"}
