@@ -20,15 +20,15 @@ const Profile = () => {
   return (
     <>
       <div className="mt-4 flex h-[calc(100vh-6rem)] flex-col items-center gap-x-24 px-36">
-        <div className="mb-6 flex w-[100%] text-left text-3xl font-medium">
+        <div className="mb-6 flex w-[100%] text-left text-2xl font-medium md:text-3xl">
           Welcome back{user ? `, ${user.displayName?.split(" ")[0]}` : ""}!
         </div>
 
         <div className="flex w-[100%] flex-row gap-6">
-          <div className="w-[30%]">
+          <div className="w-96">
             <ProfileComponent />
           </div>
-          <PopularComponent />
+          {/* <PopularComponent /> */}
         </div>
       </div>
     </>
