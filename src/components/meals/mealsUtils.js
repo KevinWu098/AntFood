@@ -4,7 +4,7 @@ const { TextServiceClient } = require("@google-ai/generativelanguage");
 const { GoogleAuth } = require("google-auth-library");
 
 const MODEL_NAME = "models/text-bison-001";
-const API_KEY = "AIzaSyDN53cxupwd-p8RnOsXRGmGiGSDuzJuHdc";
+const API_KEY = process.env.GOOGLE_API_KEY;
 
 const client = new TextServiceClient({
   authClient: new GoogleAuth().fromAPIKey(API_KEY),
