@@ -14,7 +14,4 @@ AntFood uses Artificial Intelligence to curate meals at UCI eateries; uniquely t
 - [ZotMeal & ZotMeal API](https://www.zotmeal.com/) 
 
 ## Demo
-ZotBooks will be live soon<sub>tm</sub>! If you'd like to check it out locally:
-1. Clone the repository
-2. `npm run dev` to start your localhost instance
-3. Enjoy!
+View a live demo here: https://ant-food.vercel.app/profile
